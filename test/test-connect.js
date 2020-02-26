@@ -4,7 +4,8 @@ var wifi = require('../src/wifi');
 
 wifi.init({
     debug : true,
-    iface : process.env.WIFI_IFACE
+    iface : process.env.WIFI_IFACE,
+    timeout: process.env.CONNECT_TIMEOUT
 });
 
 var ap = {
