@@ -4,6 +4,33 @@ var env = require('./env');
 
 function scanWifi(config, callback) {
   var args = [];
+  args.push('device');
+  args.push('wifi');
+  args.push('rescan');
+
+  if (config.iface) {
+    args.push('ifname');
+    args.push(config.iface);
+  }
+
+  execFile('nmcli', args, { env }, function(err, undefined) {
+    if (err) {
+      // Ignore these two errors
+      // - Scanning not allowed immediately following previous scan
+      // - Scanning not allowed while already scanning
+      var msg = err.toString();
+      if (msg.indexOf('already scanning') === -1 &&
+          msg.indexOf('following previous scan') === -1) {
+        callback && callback(err);
+        return;
+      }
+    }
+    setTimeout(listWifi, 5000, config, callback)
+  });
+}
+
+function listWifi(config, callback) {
+  var args = [];
   args.push('--terse');
   args.push('--fields');
   args.push(
