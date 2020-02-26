@@ -14,7 +14,8 @@ var macGetCurrentConnections = require('./mac-current-connections');
 
 var config = {
   debug: false,
-  iface: null
+  iface: null,
+  timeout: 10
 };
 
 function init(options) {
@@ -24,6 +25,10 @@ function init(options) {
 
   if (options && options.iface) {
     config.iface = options.iface;
+  }
+
+  if (options && options.timeout) {
+    config.timeout = options.timeout
   }
 
   var scan = function() {
