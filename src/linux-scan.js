@@ -14,17 +14,7 @@ function scanWifi(config, callback) {
   }
 
   execFile('nmcli', args, { env }, function(err, undefined) {
-    if (err) {
-      // Ignore these two errors
-      // - Scanning not allowed immediately following previous scan
-      // - Scanning not allowed while already scanning
-      var msg = err.toString();
-      if (msg.indexOf('already scanning') === -1 &&
-          msg.indexOf('following previous scan') === -1) {
-        callback && callback(err);
-        return;
-      }
-    }
+    // just ignore rescan error
     setTimeout(listWifi, 5000, config, callback)
   });
 }
